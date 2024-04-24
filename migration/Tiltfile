@@ -1,5 +1,7 @@
 load('ext://uibutton', 'cmd_button', 'text_input', 'choice_input')
 
+version_settings(check_updates=True, constraint='>=0.33.12')
+
 def setup_migration_java(
   databases, 
   migrationimage, 
