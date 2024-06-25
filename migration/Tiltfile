@@ -21,7 +21,7 @@ def setup_migration_java(
       },
       'ports': ['5432:5432'],
       'volumes': ['data-volume:/var/lib/postgresql/data'],
-      'command': '-c logging_collector=on -c log_statement=all -c jsonlog log/postgresql.json'
+      'command': '-c logging_collector=on -c log_statement=all -c jsonlog'
     }
   }
 
