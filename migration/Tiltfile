@@ -22,7 +22,7 @@ def setup_migration_java(
       'ports': ['5432:5432'],
       'volumes': ['data-volume:/var/lib/postgresql/data'],
       'command': '-c logging_collector=on -c log_statement=all'
-    }
+    },
   }
 
   pgadmin = {
@@ -49,6 +49,10 @@ def setup_migration_java(
 
   dc_resource('postgres', labels=["database"])
   dc_resource('pgadmin', labels=["database"])
+  local_resource(name='log_explain',
+                 cmd='sh -c "docker exec postgres psql -U {postgresuser} -c "LOAD \'auto_explain\'; SET auto_explain.log_min_duration = 0; SET auto_explain.log_analyze = true;" || true"'.format(postgresuser=postgresuser), 
+                 resource_deps=['postgres'], 
+                 labels=["database"])
 
   for db in databases:
 
