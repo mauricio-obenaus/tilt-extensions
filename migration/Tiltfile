@@ -66,7 +66,7 @@ def setup_migration_java(
 
     local_resource(name='create db ' + db,
                    cmd='sh -c "docker exec postgres psql -U {postgresuser} -c \'CREATE DATABASE \\\"{db}\\\"\' || true"'.format(postgresuser=postgresuser, db=db), 
-                   resource_deps=['postgres'], 
+                   resource_deps=['log_explain'], 
                    labels=[db])
     cmd_button(name='drop-database-' + db,
               resource='create db ' + db,
@@ -74,7 +74,7 @@ def setup_migration_java(
               text='Drop Database ' + db,
               icon_name='delete')
 
-    dc_resource('flyway-' + db, labels=[db], resource_deps=['postgres', 'migration-' + db, 'create db ' + db])
+    dc_resource('flyway-' + db, labels=[db], resource_deps=['log_explain', 'migration-' + db, 'create db ' + db])
 
     dc_resource('atlas-' + db, labels=[db], resource_deps=['flyway-' + db], new_name='diff-' + db, auto_init=False, trigger_mode=TRIGGER_MODE_MANUAL)
 
